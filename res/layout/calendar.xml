@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"><LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent">
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btn_left" android:text="&lt;&lt;"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btn_date" android:layout_weight="1" android:text="2010年7月"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btn_right" android:text="&gt;&gt;"></Button>
+</LinearLayout><LinearLayout android:id="@+id/LinearLayout03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
+<GridView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/grd_week_title" android:numColumns="7" android:focusable="false" android:focusableInTouchMode="false">
+</GridView><GridView android:layout_height="wrap_content" android:id="@+id/grd_week_day" android:numColumns="7" android:layout_width="fill_parent" android:focusable="true" android:focusableInTouchMode="true"></GridView></LinearLayout>
+
+</LinearLayout>
