@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:title="添加" android:id="@+id/menu_ac_add"></item>
+<item android:title="编辑" android:id="@+id/menu_ac_edit"></item><item android:title="删除" android:id="@+id/menu_ac_delete"></item>
+
+</menu>

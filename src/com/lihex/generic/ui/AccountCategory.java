@@ -1,10 +1,12 @@
 package com.lihex.generic.ui;
 
 import com.lihex.mybill.R;
+import com.lihex.mybill.data.DBHelper;
 
 import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +25,7 @@ public class AccountCategory extends TabActivity implements TabHost.TabContentFa
 		
         tabHost.addTab(tabHost.newTabSpec("tab1")
                 .setIndicator("tab1")
-                .setContent(this));
+                .setContent(new Intent(this,ItemList.class)));
         tabHost.addTab(tabHost.newTabSpec("tab2")
                 .setIndicator("tab2")
                 .setContent(this));
@@ -33,15 +35,15 @@ public class AccountCategory extends TabActivity implements TabHost.TabContentFa
         tabHost.addTab(tabHost.newTabSpec("tab4")
                 .setIndicator("tab4")
                 .setContent(this));
+        DBHelper dbHelper=new DBHelper(this);
+        dbHelper.establishDb();
 	}
 	  /** {@inheritDoc} */
     public View createTabContent(String tag) {
     	LayoutInflater mInflater = (LayoutInflater) this
 		.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     	RelativeLayout rl=(RelativeLayout)mInflater.inflate(R.layout.tab_list_item, null);
-//        final TextView tv = new TextView(this);
-//        tv.setText("Content for tab with tag " + tag);
-//        return tv;
+
     	return rl;
     }
 }

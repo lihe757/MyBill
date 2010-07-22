@@ -10,40 +10,11 @@
 <item>六</item>
 </string-array>
 
-<string-array name="week_day">
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-<item>1</item>
-
-
+<string-array name="acount_type">
+<item>现金</item>
+<item>储蓄卡</item>
+<item>信用卡</item>
+<item>其他</item>
 </string-array>
+
 </resources>

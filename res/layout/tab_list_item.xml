@@ -3,6 +3,9 @@
 <RelativeLayout android:id="@+id/RelativeLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:text="左边"></TextView>
-<TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@+id/TextView01" android:layout_alignParentRight="true" android:gravity="right" android:text="右边"></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:text="左边" android:id="@+id/txt_acount_name"></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:gravity="right" android:text="右边" android:id="@+id/txt_acount_blance"></TextView>
+<TextView android:layout_below="@id/txt_acount_blance" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="right" android:layout_alignParentRight="true" android:text="备注" android:id="@+id/txt_acount_remark"></TextView>
+
+<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toLeftOf="@+id/txt_acount_blance" android:text="余额："></TextView>
 </RelativeLayout>
