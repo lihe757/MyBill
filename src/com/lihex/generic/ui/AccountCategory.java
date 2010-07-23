@@ -14,36 +14,44 @@ import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-public class AccountCategory extends TabActivity implements TabHost.TabContentFactory{
-
+public class AccountCategory extends TabActivity {
+	private static  String[] mAcTabs;
+	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 //		setContentView(R.layout.account_category);
+		
+		mAcTabs=getResources().getStringArray(R.array.acount_type);
+		
+		
 		final TabHost tabHost=getTabHost();
 		
-        tabHost.addTab(tabHost.newTabSpec("tab1")
-                .setIndicator("tab1")
-                .setContent(new Intent(this,ItemList.class)));
+        tabHost.addTab(tabHost.newTabSpec(mAcTabs[0])
+                .setIndicator(mAcTabs[0])
+                .setContent(getIntentByIndex(0)));
         tabHost.addTab(tabHost.newTabSpec("tab2")
-                .setIndicator("tab2")
-                .setContent(this));
+                .setIndicator(mAcTabs[1])
+                .setContent(getIntentByIndex(1)));
         tabHost.addTab(tabHost.newTabSpec("tab3")
-                .setIndicator("tab3")
-                .setContent(this));
+                .setIndicator(mAcTabs[2])
+                .setContent(getIntentByIndex(2)));
         tabHost.addTab(tabHost.newTabSpec("tab4")
-                .setIndicator("tab4")
-                .setContent(this));
+                .setIndicator(mAcTabs[3])
+                .setContent(getIntentByIndex(3)));
         DBHelper dbHelper=new DBHelper(this);
         dbHelper.establishDb();
 	}
-	  /** {@inheritDoc} */
-    public View createTabContent(String tag) {
-    	LayoutInflater mInflater = (LayoutInflater) this
-		.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    	RelativeLayout rl=(RelativeLayout)mInflater.inflate(R.layout.tab_list_item, null);
-
-    	return rl;
-    }
+	private Intent getIntentByIndex(int index){
+		Intent i=new Intent(this,ItemList.class);
+		i.putExtra("type", mAcTabs[index]);
+		return i;
+		
+	}
+	
+	
+	
 }

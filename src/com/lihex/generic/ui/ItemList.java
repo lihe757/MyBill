@@ -34,6 +34,7 @@ public class ItemList extends ListActivity {
 
 	private SimpleCursorAdapter mCAdapter;
 	private DBHelper mDbHelper;
+	private String[] mTypeArray;
 	private static final String[] FROM = { "name", "blance", "remark" };
 	private static final int[] TO = { R.id.txt_acount_name,
 			R.id.txt_acount_blance, R.id.txt_acount_remark };
@@ -41,8 +42,9 @@ public class ItemList extends ListActivity {
 	private static final int DELETE_ACOUNT_TYPE = 1 << 1;
 	private static final int ADD_ACOUNT_TYPE = 1 << 2;
 	private static final int EDIT_ACOUNT_TYPE = 1 << 3;
-	
-	private static final int MENU_GROUP_ALTERNATIVE=0x00000001;
+
+	/* 编辑、删除菜单组ID */
+	private static final int MENU_GROUP_ALTERNATIVE = 0x00000001;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,62 +52,60 @@ public class ItemList extends ListActivity {
 		super.onCreate(savedInstanceState);
 		// Inform the list we provide context menus for items
 		getListView().setOnCreateContextMenuListener(this);
-		
-		initView();
 
-	}
+		/* 读取站户类型数组 */
+		mTypeArray = getResources().getStringArray(R.array.acount_type);
 
-	private void initView() {
+		/* 数据库操作 */
 		mDbHelper = new DBHelper(this);
 		mDbHelper.establishDb();
-//		 mDbHelper.insert("优惠券", 1000f, "红包");
-		Cursor c = mDbHelper.fetchAll();
 
-		 mCAdapter = new SimpleCursorAdapter(this,
-				R.layout.tab_list_item, c, FROM, TO);
-		
-		this.setListAdapter(mCAdapter);
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 
 		final AdapterView.AdapterContextMenuInfo info;
-		
+
 		LayoutInflater factory = LayoutInflater.from(this);
 		final View textEntryView = factory.inflate(
 				R.layout.acount_type_text_dialog, null);
-		/*账户类型*/
-		final Button typeBtn=(Button)textEntryView.findViewById(R.id.btn_ac_type);
+		/* 账户类型 */
+		final Button typeBtn = (Button) textEntryView
+				.findViewById(R.id.btn_ac_type);
 		typeBtn.setOnClickListener(new Button.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				final CharSequence[] items=getResources().getStringArray(R.array.acount_type);
-				final AlertDialog typeDialog=new AlertDialog.Builder(ItemList.this)
-				.setTitle("")
-				.setItems(items, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-						typeBtn.setText(items[which]);
-					}
-				}).create();
-				
+
+				final AlertDialog typeDialog = new AlertDialog.Builder(
+						ItemList.this).setTitle("选择账户类型").setItems(mTypeArray,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+
+								typeBtn.setText(mTypeArray[which]);
+							}
+						}).create();
+
 				typeDialog.show();
-				
+
 			}
 		});
-		/*账户名称*/
-		final EditText edtName=(EditText)textEntryView.findViewById(R.id.edt_ac_name);
-		final EditText edtBlance=(EditText)textEntryView.findViewById(R.id.edt_ac_blance);
-		final EditText edtRemark=(EditText)textEntryView.findViewById(R.id.edt_ac_remark);
-		
+		/* 账户名称 */
+		final EditText edtName = (EditText) textEntryView
+				.findViewById(R.id.edt_ac_name);
+		final EditText edtBlance = (EditText) textEntryView
+				.findViewById(R.id.edt_ac_blance);
+		final EditText edtRemark = (EditText) textEntryView
+				.findViewById(R.id.edt_ac_remark);
+
 		int menuId = item.getItemId();
 		switch (menuId) {
 		case ADD_ACOUNT_TYPE:
-			Log.i("ItemList", (String) item.getTitle());	
+			Log.i("ItemList", (String) item.getTitle());
 			new AlertDialog.Builder(ItemList.this)
 					// .setIcon(R.drawable.alert_dialog_icon)
 					.setTitle("添加新账户类型").setView(textEntryView)
@@ -113,9 +113,14 @@ public class ItemList extends ListActivity {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
-									 mDbHelper.insert(edtName.getText().toString(), Float.parseFloat(edtBlance.getText().toString()), edtRemark.getText().toString());
-									 /*刷新数据*/
-									 mCAdapter.getCursor().requery();
+									mDbHelper.insert(edtName.getText()
+											.toString(), Float
+											.parseFloat(edtBlance.getText()
+													.toString()), edtRemark
+											.getText().toString(), typeBtn
+											.getText().toString());
+									/* 刷新数据 */
+									mCAdapter.getCursor().requery();
 									Log.i(TAG, "" + whichButton);
 								}
 							}).setNegativeButton("取消",
@@ -128,98 +133,102 @@ public class ItemList extends ListActivity {
 							}).create().show();
 			break;
 		case EDIT_ACOUNT_TYPE:
-			
+
 			try {
 				info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 			} catch (ClassCastException e) {
 				Log.e(TAG, "bad menuInfo", e);
 				return false;
 			}
-			
-			Cursor c=mCAdapter.getCursor();
-			if(null==info){
+
+			final Cursor c = mCAdapter.getCursor();
+			if (null == info) {
 				c.moveToPosition(getSelectedItemPosition());
-			}else{
+			} else {
 				c.moveToPosition(info.position);
 			}
-			
-			
-			
+
 			edtName.setText(c.getString(1));
-			edtBlance.setText(c.getFloat(2)+"");
+			edtBlance.setText(c.getFloat(2) + "");
 			edtRemark.setText(c.getString(3));
+			typeBtn.setText(c.getString(4));
 			new AlertDialog.Builder(ItemList.this)
-			// .setIcon(R.drawable.alert_dialog_icon)
-			.setTitle("编辑账户类型").setView(textEntryView)
-			.setPositiveButton("OK",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
+					// .setIcon(R.drawable.alert_dialog_icon)
+					.setTitle("编辑账户类型").setView(textEntryView)
+					.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									mDbHelper.update(c.getInt(0), edtName
+											.getText().toString(), Float
+											.parseFloat(edtBlance.getText()
+													.toString()), edtRemark
+											.getText().toString(), typeBtn
+											.getText().toString());
 
-							Log.i(TAG, "" + whichButton);
-						}
-					}).setNegativeButton("取消",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							Log.i(TAG, "" + whichButton);
+									/* 更新视图 */
+									mCAdapter.getCursor().requery();
+								}
+							}).setNegativeButton("取消",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									Log.i(TAG, "" + whichButton);
 
-						}
-					}).create().show();
+								}
+							}).create().show();
 			break;
 		case DELETE_ACOUNT_TYPE:
-			
+
 			try {
 				info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 			} catch (ClassCastException e) {
 				Log.e(TAG, "bad menuInfo", e);
 				return false;
 			}
-			
+
 			new AlertDialog.Builder(ItemList.this)
 			// .setIcon(R.drawable.alert_dialog_icon)
-			.setTitle("删除账户类型")
-			.setPositiveButton("OK",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							Cursor c=mCAdapter.getCursor();
-							if(null==info){
-								c.moveToPosition(getSelectedItemPosition());
-							}else{
-								c.moveToPosition(info.position);
-							}
-							
-							int id=c.getInt(0);
-							mDbHelper.delete(id);
-							 /*刷新数据*/
-							mCAdapter.getCursor().requery();
-							
-							Log.i(TAG, "Delete id = " + id);
-						}
-					}).setNegativeButton("取消",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							Log.i(TAG, "" + whichButton);
+					.setTitle("删除账户类型").setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									Cursor c = mCAdapter.getCursor();
+									if (null == info) {
+										c
+												.moveToPosition(getSelectedItemPosition());
+									} else {
+										c.moveToPosition(info.position);
+									}
 
-						}
-					})
-					.setMessage("确定删除改账户类型？")
-					.create().show();
+									int id = c.getInt(0);
+									mDbHelper.delete(id);
+									/* 刷新数据 */
+									mCAdapter.getCursor().requery();
+
+									Log.i(TAG, "Delete id = " + id);
+								}
+							}).setNegativeButton("取消",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									Log.i(TAG, "" + whichButton);
+
+								}
+							}).setMessage("确定删除改账户类型？").create().show();
 			break;
 		}
 
 		return super.onMenuItemSelected(featureId, item);
 	}
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, ADD_ACOUNT_TYPE, 0, "新建").setIcon(android.R.drawable.ic_menu_add);
-    	menu.add(MENU_GROUP_ALTERNATIVE,EDIT_ACOUNT_TYPE,0,"edit");
-    	menu.add(MENU_GROUP_ALTERNATIVE,DELETE_ACOUNT_TYPE,0,"delete");
+		menu.add(0, ADD_ACOUNT_TYPE, 0, "新建").setIcon(
+				android.R.drawable.ic_menu_add);
+		menu.add(MENU_GROUP_ALTERNATIVE, EDIT_ACOUNT_TYPE, 0, "edit");
+		menu.add(MENU_GROUP_ALTERNATIVE, DELETE_ACOUNT_TYPE, 0, "delete");
 		return true;
 	}
 
@@ -239,60 +248,76 @@ public class ItemList extends ListActivity {
 		}
 		// Setup the menu header
 		menu.setHeaderTitle(c.getString(1));
-		
-		Log.i(TAG, "id onCreateContextMenu"+info.id);
+
+		Log.i(TAG, "id onCreateContextMenu" + info.id);
 
 		// Add a menu item to delete and edit the note
-		menu.add(0,EDIT_ACOUNT_TYPE,0,"Edit");
+		menu.add(0, EDIT_ACOUNT_TYPE, 0, "Edit");
 		menu.add(0, DELETE_ACOUNT_TYPE, 0, "Delete");
-		
-		
-		
+
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		  AdapterView.AdapterContextMenuInfo info;
-	        try {
-	             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-	        } catch (ClassCastException e) {
-	            Log.e(TAG, "bad menuInfo", e);
-	            return false;
-	        }
+		AdapterView.AdapterContextMenuInfo info;
+		try {
+			info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		} catch (ClassCastException e) {
+			Log.e(TAG, "bad menuInfo", e);
+			return false;
+		}
 
-	        switch (item.getItemId()) {
-	            case DELETE_ACOUNT_TYPE: {
-	            	Cursor c = (Cursor) getListAdapter().getItem(info.position);
-	            	Log.i(TAG,"onContextItemSelected = "+c.getInt(0));
-	            	return true;
-	            }
-	        }
-	        return false;
+		switch (item.getItemId()) {
+		case DELETE_ACOUNT_TYPE: {
+			Cursor c = (Cursor) getListAdapter().getItem(info.position);
+			Log.i(TAG, "onContextItemSelected = " + c.getInt(0));
+			return true;
+		}
+		}
+		return false;
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		
+
 		super.onPrepareOptionsMenu(menu);
-		
+
 		final boolean haveItems = getListAdapter().getCount() > 0;
-		Log.i(TAG,getSelectedItemPosition()+"");
+		Log.i(TAG, getSelectedItemPosition() + "");
 
-        // If there are any notes in the list (which implies that one of
-        // them is selected), then we need to generate the actions that
-        // can be performed on the current selection.  This will be a combination
-        // of our own specific actions along with any extensions that can be
-        // found.
-        if (haveItems&&(getSelectedItemPosition()!=-1)) {
-        	menu.setGroupVisible(MENU_GROUP_ALTERNATIVE, true);
-        	
+		// If there are any notes in the list (which implies that one of
+		// them is selected), then we need to generate the actions that
+		// can be performed on the current selection. This will be a combination
+		// of our own specific actions along with any extensions that can be
+		// found.
+		if (haveItems && (getSelectedItemPosition() != -1)) {
+			menu.setGroupVisible(MENU_GROUP_ALTERNATIVE, true);
 
-        }else{
-        	menu.setGroupVisible(MENU_GROUP_ALTERNATIVE, false);
-        }
+		} else {
+			menu.setGroupVisible(MENU_GROUP_ALTERNATIVE, false);
+		}
 
-        return true;
+		return true;
 	}
 
-	
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		String type = getIntent().getStringExtra("type");
+		if (type == null || type.equals("")) {
+			type = mTypeArray[0];
+		}
+
+		Cursor c = mDbHelper.fetchAllByTypeField(type);
+		if (mCAdapter == null) {
+			mCAdapter = new SimpleCursorAdapter(this, R.layout.tab_list_item,
+					c, FROM, TO);
+			this.setListAdapter(mCAdapter);
+		} else {
+			mCAdapter.changeCursor(c);
+		}
+
+	}
+
 }
