@@ -72,13 +72,13 @@ public class CalendarActivity extends Activity implements OnItemClickListener {
 			}
 		});
 
-		/* ³õÊ¼»¯ĞÇÆÚ±êÌâ */
+		/* åˆå§‹åŒ–æ˜ŸæœŸæ ‡é¢˜ */
 		GridView grdView = (GridView) findViewById(R.id.grd_week_title);
 		ArrayAdapter<CharSequence> adapter =ArrayAdapter.createFromResource(this, R.array.week_title, R.layout.text_week_title);
 		
 
 		grdView.setAdapter(adapter);
-		// /*³õÊ¼»¯ÈÕÀú±í*/
+		// /*åˆå§‹åŒ–æ—¥å†è¡¨*/
 		mGridWeekDay = (GridView) findViewById(R.id.grd_week_day);
 		weekDayAdapter = new WeekDayAdapter(this, mCalendar,
 				 R.layout.text_week_day);
@@ -101,7 +101,7 @@ public class CalendarActivity extends Activity implements OnItemClickListener {
 					}
 				}, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
 				mCalendar.get(Calendar.DAY_OF_MONTH));
-		dpd.setTitle("Ñ¡ÔñÊ±¼ä");
+		dpd.setTitle("é€‰æ‹©æ—¶é—´");
 
 		dpd.show();
 	}
@@ -115,12 +115,12 @@ public class CalendarActivity extends Activity implements OnItemClickListener {
 	}
 
 	/**
-	 * ´¦ÀíÈÕÀú±ä»¯
+	 * å¤„ç†æ—¥å†å˜åŒ–
 	 */
 	private void OnDateChangeListener() {
 
 		weekDayAdapter.notifyDataSetChanged();
-		mBtnDate.setText(DateFormat.format("yyyyÄêMMÔÂ", mCalendar));
+		mBtnDate.setText(DateFormat.format("yyyyå¹´MMæœˆ", mCalendar));
 	}
 
 	private static void debug(String tag, String mesg) {

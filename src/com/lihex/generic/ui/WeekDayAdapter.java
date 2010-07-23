@@ -19,9 +19,9 @@ public class WeekDayAdapter extends BaseAdapter {
 	private static final int MAX_OF_DAY = 42;
 	private Calendar mCalendar;
 	private Calendar tmpCalendar = Calendar.getInstance();
-	/* ±¾ÔÂ1ºÅ£¬ÊÇ±¾ÖÜµÄµÚ¼¸Ìì£¬ĞÇÆÚÌìÎªÒ»ÖÜµ±ÖĞµÄµÚÒ»Ìì */
+	/* æœ¬æœˆ1å·ï¼Œæ˜¯æœ¬å‘¨çš„ç¬¬å‡ å¤©ï¼Œæ˜ŸæœŸå¤©ä¸ºä¸€å‘¨å½“ä¸­çš„ç¬¬ä¸€å¤© */
 	private int weekDayOfMonthDay;
-	/* ±¾ÔÂµÄ×î´óÌìÊı */
+	/* æœ¬æœˆçš„æœ€å¤§å¤©æ•° */
 	private int maxdays;
 
 	private int mResource;
@@ -122,11 +122,11 @@ public class WeekDayAdapter extends BaseAdapter {
 	public void notifyDataSetChanged() {
 		tmpCalendar.set(mCalendar.get(Calendar.YEAR), mCalendar
 				.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
-		/* ÉèÖÃÎª±¾ÔÂÒ»ºÅ */
+		/* è®¾ç½®ä¸ºæœ¬æœˆä¸€å· */
 		this.tmpCalendar.set(Calendar.DAY_OF_MONTH, 1);
-		/* ±¾ÔÂ1ºÅ£¬ÊÇ±¾ÖÜµÄµÚ¼¸Ìì£¬ĞÇÆÚÌìÎªÒ»ÖÜµ±ÖĞµÄµÚÒ»Ìì */
+		/* æœ¬æœˆ1å·ï¼Œæ˜¯æœ¬å‘¨çš„ç¬¬å‡ å¤©ï¼Œæ˜ŸæœŸå¤©ä¸ºä¸€å‘¨å½“ä¸­çš„ç¬¬ä¸€å¤© */
 		this.weekDayOfMonthDay = tmpCalendar.get(Calendar.DAY_OF_WEEK) - 1;
-		/* ±¾ÔÂµÄ×î´óÌìÊı */
+		/* æœ¬æœˆçš„æœ€å¤§å¤©æ•° */
 		this.maxdays = tmpCalendar.getActualMaximum(Calendar.DAY_OF_MONTH) - 1;
 		super.notifyDataSetChanged();
 	}

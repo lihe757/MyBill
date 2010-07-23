@@ -58,7 +58,7 @@ public class ItemList extends ListActivity {
 	private void initView() {
 		mDbHelper = new DBHelper(this);
 		mDbHelper.establishDb();
-//		 mDbHelper.insert("ÓÅ»İÈ¯", 1000f, "ºì°ü");
+//		 mDbHelper.insert("ä¼˜æƒ åˆ¸", 1000f, "çº¢åŒ…");
 		Cursor c = mDbHelper.fetchAll();
 
 		 mCAdapter = new SimpleCursorAdapter(this,
@@ -75,7 +75,7 @@ public class ItemList extends ListActivity {
 		LayoutInflater factory = LayoutInflater.from(this);
 		final View textEntryView = factory.inflate(
 				R.layout.acount_type_text_dialog, null);
-		/*ÕË»§ÀàĞÍ*/
+		/*è´¦æˆ·ç±»å‹*/
 		final Button typeBtn=(Button)textEntryView.findViewById(R.id.btn_ac_type);
 		typeBtn.setOnClickListener(new Button.OnClickListener() {
 			
@@ -97,7 +97,7 @@ public class ItemList extends ListActivity {
 				
 			}
 		});
-		/*ÕË»§Ãû³Æ*/
+		/*è´¦æˆ·åç§°*/
 		final EditText edtName=(EditText)textEntryView.findViewById(R.id.edt_ac_name);
 		final EditText edtBlance=(EditText)textEntryView.findViewById(R.id.edt_ac_blance);
 		final EditText edtRemark=(EditText)textEntryView.findViewById(R.id.edt_ac_remark);
@@ -108,17 +108,17 @@ public class ItemList extends ListActivity {
 			Log.i("ItemList", (String) item.getTitle());	
 			new AlertDialog.Builder(ItemList.this)
 					// .setIcon(R.drawable.alert_dialog_icon)
-					.setTitle("Ìí¼ÓĞÂÕË»§ÀàĞÍ").setView(textEntryView)
+					.setTitle("æ·»åŠ æ–°è´¦æˆ·ç±»å‹").setView(textEntryView)
 					.setPositiveButton("OK",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
 									 mDbHelper.insert(edtName.getText().toString(), Float.parseFloat(edtBlance.getText().toString()), edtRemark.getText().toString());
-									 /*Ë¢ĞÂÊı¾İ*/
+									 /*åˆ·æ–°æ•°æ®*/
 									 mCAdapter.getCursor().requery();
 									Log.i(TAG, "" + whichButton);
 								}
-							}).setNegativeButton("È¡Ïû",
+							}).setNegativeButton("å–æ¶ˆ",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
@@ -150,7 +150,7 @@ public class ItemList extends ListActivity {
 			edtRemark.setText(c.getString(3));
 			new AlertDialog.Builder(ItemList.this)
 			// .setIcon(R.drawable.alert_dialog_icon)
-			.setTitle("±à¼­ÕË»§ÀàĞÍ").setView(textEntryView)
+			.setTitle("ç¼–è¾‘è´¦æˆ·ç±»å‹").setView(textEntryView)
 			.setPositiveButton("OK",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,
@@ -158,7 +158,7 @@ public class ItemList extends ListActivity {
 
 							Log.i(TAG, "" + whichButton);
 						}
-					}).setNegativeButton("È¡Ïû",
+					}).setNegativeButton("å–æ¶ˆ",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
@@ -178,7 +178,7 @@ public class ItemList extends ListActivity {
 			
 			new AlertDialog.Builder(ItemList.this)
 			// .setIcon(R.drawable.alert_dialog_icon)
-			.setTitle("É¾³ıÕË»§ÀàĞÍ")
+			.setTitle("åˆ é™¤è´¦æˆ·ç±»å‹")
 			.setPositiveButton("OK",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,
@@ -192,12 +192,12 @@ public class ItemList extends ListActivity {
 							
 							int id=c.getInt(0);
 							mDbHelper.delete(id);
-							 /*Ë¢ĞÂÊı¾İ*/
+							 /*åˆ·æ–°æ•°æ®*/
 							mCAdapter.getCursor().requery();
 							
 							Log.i(TAG, "Delete id = " + id);
 						}
-					}).setNegativeButton("È¡Ïû",
+					}).setNegativeButton("å–æ¶ˆ",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
@@ -205,7 +205,7 @@ public class ItemList extends ListActivity {
 
 						}
 					})
-					.setMessage("È·¶¨É¾³ı¸ÄÕË»§ÀàĞÍ£¿")
+					.setMessage("ç¡®å®šåˆ é™¤æ”¹è´¦æˆ·ç±»å‹ï¼Ÿ")
 					.create().show();
 			break;
 		}
@@ -217,7 +217,7 @@ public class ItemList extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, ADD_ACOUNT_TYPE, 0, "ĞÂ½¨").setIcon(android.R.drawable.ic_menu_add);
+		menu.add(0, ADD_ACOUNT_TYPE, 0, "æ–°å»º").setIcon(android.R.drawable.ic_menu_add);
     	menu.add(MENU_GROUP_ALTERNATIVE,EDIT_ACOUNT_TYPE,0,"edit");
     	menu.add(MENU_GROUP_ALTERNATIVE,DELETE_ACOUNT_TYPE,0,"delete");
 		return true;
