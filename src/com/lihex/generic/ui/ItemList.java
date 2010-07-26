@@ -2,12 +2,8 @@ package com.lihex.generic.ui;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.ContentUris;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
-import android.database.DataSetObserver;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -15,25 +11,21 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 
 import com.lihex.mybill.R;
-import com.lihex.mybill.data.DBHelper;
+import com.lihex.mybill.data.DBHelperAccountType;
+import com.lihex.mybill.data.DBHelperFactory;
 
 public class ItemList extends ListActivity {
 	public static final String TAG = "ItemList";
 
 	private SimpleCursorAdapter mCAdapter;
-	private DBHelper mDbHelper;
+	private DBHelperAccountType mDbHelper;
 	private String[] mTypeArray;
 	private static final String[] FROM = { "name", "blance", "remark" };
 	private static final int[] TO = { R.id.txt_acount_name,
@@ -57,8 +49,7 @@ public class ItemList extends ListActivity {
 		mTypeArray = getResources().getStringArray(R.array.acount_type);
 
 		/* 数据库操作 */
-		mDbHelper = new DBHelper(this);
-		mDbHelper.establishDb();
+		mDbHelper=(DBHelperAccountType)DBHelperFactory.getInstance(this).getDBHelperByType(DBHelperFactory.DB_TYPE_ACCOUNT_TYPE);
 
 	}
 

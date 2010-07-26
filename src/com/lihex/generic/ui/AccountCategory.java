@@ -1,18 +1,11 @@
 package com.lihex.generic.ui;
 
-import com.lihex.mybill.R;
-import com.lihex.mybill.data.DBHelper;
-
-import android.app.Activity;
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
-import android.widget.TextView;
+
+import com.lihex.mybill.R;
 
 public class AccountCategory extends TabActivity {
 	private static  String[] mAcTabs;
@@ -21,10 +14,7 @@ public class AccountCategory extends TabActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.account_category);
-		
 		mAcTabs=getResources().getStringArray(R.array.acount_type);
 		
 		
@@ -42,8 +32,6 @@ public class AccountCategory extends TabActivity {
         tabHost.addTab(tabHost.newTabSpec("tab4")
                 .setIndicator(mAcTabs[3])
                 .setContent(getIntentByIndex(3)));
-        DBHelper dbHelper=new DBHelper(this);
-        dbHelper.establishDb();
 	}
 	private Intent getIntentByIndex(int index){
 		Intent i=new Intent(this,ItemList.class);
