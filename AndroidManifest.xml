@@ -17,7 +17,7 @@
 </intent-filter>
 </activity>
 <activity android:name="com.lihex.generic.ui.AccountCategory"><intent-filter><action android:name="android.intent.action.MAIN"></action>
-<category android:name="android.intent.category.LAUNCHER"></category>
+<category android:name="android.intent.category.DEFAULT"></category>
 </intent-filter>
 </activity>
 <activity android:name="com.lihex.generic.ui.ItemList"><intent-filter><action android:name="android.intent.action.MAIN"></action>
@@ -25,10 +25,14 @@
 </intent-filter>
 </activity>
 <activity android:name="com.lihex.generic.ui.UseCategoryActivity"><intent-filter><action android:name="android.intent.action.MAIN"></action>
-<category android:name="android.intent.category.DEFAULT"></category>
+<category android:name="android.intent.category.LAUNCHER"></category>
 </intent-filter>
 </activity>
 <activity android:name="com.lihex.generic.ui.UCItemList"><intent-filter><action android:name="android.intent.action.MAIN"></action>
+<category android:name="android.intent.category.DEFAULT"></category>
+</intent-filter>
+</activity>
+<activity android:name="com.lihex.generic.ui.ChooseUsageType"><intent-filter><action android:name="android.intent.action.MAIN"></action>
 <category android:name="android.intent.category.DEFAULT"></category>
 </intent-filter>
 </activity>

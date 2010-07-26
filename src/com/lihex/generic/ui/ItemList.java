@@ -49,7 +49,7 @@ public class ItemList extends ListActivity {
 		mTypeArray = getResources().getStringArray(R.array.acount_type);
 
 		/* 数据库操作 */
-		mDbHelper=(DBHelperAccountType)DBHelperFactory.getInstance(this).getDBHelperByType(DBHelperFactory.DB_TYPE_ACCOUNT_TYPE);
+		mDbHelper=(DBHelperAccountType)DBHelperFactory.getInstance(this).getDBHelperByType(DBHelperFactory.DB_TYPE_ACCOUNT);
 
 	}
 

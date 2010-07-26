@@ -1,111 +1,123 @@
 package com.lihex.generic.ui;
 
 import android.app.ExpandableListActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.TextView;
+import android.widget.ExpandableListView;
+import android.widget.SimpleCursorTreeAdapter;
+import android.widget.ExpandableListView.OnGroupClickListener;
 
-public class UCItemList extends ExpandableListActivity {
+import com.lihex.mybill.data.DBHelperFactory;
+import com.lihex.mybill.data.DBHelperUsage;
+
+public class UCItemList extends ExpandableListActivity implements OnGroupClickListener {
+	public static final String TAG="UCItemList";
+	private static final int DELETE_ACOUNT_TYPE = 1 << 1;
+	private static final int ADD_ACOUNT_TYPE = 1 << 2;
+	private static final int EDIT_ACOUNT_TYPE = 1 << 3;
+	
 
 	private CatgItemListAdapter mCAdapter;
-
+	private DBHelperUsage mDbHelper;
+	
+	public static final String[] GROUPNAME={"name"};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mCAdapter=new CatgItemListAdapter();
+		mDbHelper=(DBHelperUsage)DBHelperFactory.getInstance(this).getDBHelperByType(DBHelperFactory.DB_TYPE_USAGE);
+		Cursor cursor=mDbHelper.fetchFirstLevel();
+		Log.i(TAG,"cursor size = "+cursor.getCount());
+		mCAdapter=new CatgItemListAdapter(cursor,
+                this,
+                android.R.layout.simple_expandable_list_item_1,
+                android.R.layout.simple_expandable_list_item_1,
+                new String[] {"name"}, // Name for group layouts
+                new int[] {android.R.id.text1},
+                new String[] {"name"}, // Number for child layouts
+                new int[] {android.R.id.text1});
 		setListAdapter(mCAdapter);
+	
+		getExpandableListView().setOnGroupClickListener(this);
+
+	}
+	
+	
+	
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(0, ADD_ACOUNT_TYPE, 0, "新建").setIcon(
+				android.R.drawable.ic_menu_add);
+		return true;
 	}
 
-	public class CatgItemListAdapter extends BaseExpandableListAdapter {
-		private String[] groups = { "People Names", "Dog Names", "Cat Names",
-				"Fish Names" };
-		private String[][] children = {
-				{ "Arnold", "Barry", "Chuck", "David" },
-				{ "Ace", "Bandit", "Cha-Cha", "Deuce" },
-				{ "Fluffy", "Snuggles" }, { "Goldy", "Bubbles" } };
+
+
+
+
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v,
+			int groupPosition, int childPosition, long id) {
+		// TODO Auto-generated method stub
+		return super.onChildClick(parent, v, groupPosition, childPosition, id);
+	}
+
+
+
+
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		int menuId = item.getItemId();
+		switch (menuId) {
+		case ADD_ACOUNT_TYPE:
+//			mDbHelper.insert(2, "你好"+System.currentTimeMillis(), "支付");
+			startActivity(new Intent(this,ChooseUsageType.class));
+			Log.i(TAG,"添加一条USAGE");
+			break;
+		}
+		return true;
+	}
+
+
+
+
+
+	public class CatgItemListAdapter extends SimpleCursorTreeAdapter {
+
+        public CatgItemListAdapter(Cursor cursor, Context context, int groupLayout,
+                int childLayout, String[] groupFrom, int[] groupTo, String[] childrenFrom,
+                int[] childrenTo) {
+            super(context, cursor, groupLayout, groupFrom, groupTo, childLayout, childrenFrom,
+                    childrenTo);
+        }
 
 		@Override
-		public Object getChild(int groupPosition, int childPosition) {
+		protected Cursor getChildrenCursor(Cursor groupCursor) {
 			// TODO Auto-generated method stub
-			return children[groupPosition][childPosition];
+			Log.i(TAG,"id = "+groupCursor.getInt(0));
+			
+			return mDbHelper.fetchSecendLevel(groupCursor.getInt(0));
 		}
 
-		@Override
-		public long getChildId(int groupPosition, int childPosition) {
-			// TODO Auto-generated method stub
-			return childPosition;
-		}
+    }
 
-		@Override
-		public int getChildrenCount(int groupPosition) {
-			// TODO Auto-generated method stub
-			return children[groupPosition].length;
-		}
 
-		@Override
-		public View getChildView(int groupPosition, int childPosition,
-				boolean isLastChild, View convertView, ViewGroup parent) {
-			 TextView textView = getGenericView();
-	            textView.setText(getChild(groupPosition, childPosition).toString());
-			return textView;
-		}
 
-		@Override
-		public Object getGroup(int groupPosition) {
-			// TODO Auto-generated method stub
-			return groups[groupPosition];
-		}
 
-		@Override
-		public int getGroupCount() {
-			// TODO Auto-generated method stub
-			return groups.length;
-		}
 
-		@Override
-		public long getGroupId(int groupPosition) {
-			// TODO Auto-generated method stub
-			return groupPosition;
-		}
-
-		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded,
-				View convertView, ViewGroup parent) {
-			  TextView textView = getGenericView();
-	            textView.setText(getGroup(groupPosition).toString());
-	            return textView;
-		}
-		
-		   public TextView getGenericView() {
-	            // Layout parameters for the ExpandableListView
-	            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-	                    ViewGroup.LayoutParams.FILL_PARENT, 64);
-
-	            TextView textView = new TextView(UCItemList.this);
-	            textView.setLayoutParams(lp);
-	            // Center the text vertically
-	            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-	            // Set the text starting position
-	            textView.setPadding(36, 0, 0, 0);
-	            return textView;
-	        }
-
-		@Override
-		public boolean hasStableIds() {
-			// TODO Auto-generated method stub
-			return true;
-		}
-
-		@Override
-		public boolean isChildSelectable(int groupPosition, int childPosition) {
-			// TODO Auto-generated method stub
-			return true;
-		}
-
+	@Override
+	public boolean onGroupClick(ExpandableListView parent, View v,
+			int groupPosition, long id) {
+		Log.i(TAG,"groupPosition = "+groupPosition);
+		return false;
 	}
 
 }
