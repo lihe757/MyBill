@@ -85,6 +85,7 @@ public class CalendarActivity extends Activity implements OnItemClickListener {
 
 		mGridWeekDay.setAdapter(weekDayAdapter);
 		mGridWeekDay.setOnItemClickListener(this);
+		
 
 	}
 

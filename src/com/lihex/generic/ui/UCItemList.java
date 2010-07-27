@@ -4,11 +4,16 @@ import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.gesture.GestureOverlayView.OnGestureListener;
+import android.gesture.GestureOverlayView.OnGesturingListener;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ExpandableListView;
 import android.widget.SimpleCursorTreeAdapter;
 import android.widget.ExpandableListView.OnGroupClickListener;
@@ -16,7 +21,7 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import com.lihex.mybill.data.DBHelperFactory;
 import com.lihex.mybill.data.DBHelperUsage;
 
-public class UCItemList extends ExpandableListActivity implements OnGroupClickListener {
+public class UCItemList extends ExpandableListActivity implements OnTouchListener {
 	public static final String TAG="UCItemList";
 	private static final int DELETE_ACOUNT_TYPE = 1 << 1;
 	private static final int ADD_ACOUNT_TYPE = 1 << 2;
@@ -25,6 +30,7 @@ public class UCItemList extends ExpandableListActivity implements OnGroupClickLi
 
 	private CatgItemListAdapter mCAdapter;
 	private DBHelperUsage mDbHelper;
+	private GestureDetector mGestureDetector;
 	
 	public static final String[] GROUPNAME={"name"};
 	@Override
@@ -43,7 +49,9 @@ public class UCItemList extends ExpandableListActivity implements OnGroupClickLi
                 new int[] {android.R.id.text1});
 		setListAdapter(mCAdapter);
 	
-		getExpandableListView().setOnGroupClickListener(this);
+		getExpandableListView().setOnTouchListener(this);
+		getExpandableListView().setLongClickable(true);
+		mGestureDetector=new GestureDetector(new MyGesture());
 
 	}
 	
@@ -108,16 +116,32 @@ public class UCItemList extends ExpandableListActivity implements OnGroupClickLi
 		}
 
     }
+	public class MyGesture extends GestureDetector.SimpleOnGestureListener{
 
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+			Log.i(TAG,"on DoubleTaping!!");
+			return super.onDoubleTap(e);
+		}
+
+		
+		
+	}
 
 
 
 
 	@Override
-	public boolean onGroupClick(ExpandableListView parent, View v,
-			int groupPosition, long id) {
-		Log.i(TAG,"groupPosition = "+groupPosition);
+	public boolean onTouch(View v, MotionEvent event) {
+		
+		mGestureDetector.onTouchEvent(event);
 		return false;
 	}
+
+
+
+
+
+	
 
 }
