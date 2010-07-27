@@ -6,13 +6,15 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.TabHost.TabContentFactory;
 
 public class UseCategoryActivity extends TabActivity implements TabContentFactory{
 
-
+	private ExpandableListView mExpandableListView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,6 +31,9 @@ public class UseCategoryActivity extends TabActivity implements TabContentFactor
         tabHost.addTab(tabHost.newTabSpec("tab3")
                 .setIndicator("转账")
                 .setContent(this));
+        
+        mExpandableListView=new ExpandableListView(this);
+      
         
 	}
 

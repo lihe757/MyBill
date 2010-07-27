@@ -37,7 +37,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mDbHelper=(DBHelperUsage)DBHelperFactory.getInstance(this).getDBHelperByType(DBHelperFactory.DB_TYPE_USAGE);
-		Cursor cursor=mDbHelper.fetchFirstLevel();
+		Cursor cursor=mDbHelper.fetchFirstLevel("支出");
 		Log.i(TAG,"cursor size = "+cursor.getCount());
 		mCAdapter=new CatgItemListAdapter(cursor,
                 this,

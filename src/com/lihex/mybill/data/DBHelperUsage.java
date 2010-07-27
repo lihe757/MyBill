@@ -29,8 +29,8 @@ public class DBHelperUsage extends DBHelper {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public Cursor fetchFirstLevel(){
-		Cursor c=db.query(DBHelperFactory.DB_TABLE_USAGE, COLS, " parent_id = -1", null, null, null, null);
+	public Cursor fetchFirstLevel(String type){
+		Cursor c=db.query(DBHelperFactory.DB_TABLE_USAGE, COLS, " parent_id = -1 AND type = '"+type+"'", null, null, null, null);
 		return c;
 	}
 	public Cursor fetchSecendLevel(int pId){
