@@ -59,4 +59,10 @@ public class DBHelperAccountType extends DBHelper {
 		return null;
 	}
 
+	@Override
+	public void insert(ContentValues values) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

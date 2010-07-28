@@ -4,11 +4,14 @@
   android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent">
 <TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="名称："></TextView><EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/edt_usage_name"></EditText>
 
-<TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="父类："></TextView><RadioGroup android:id="@+id/RadioGroup01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal"><RadioButton android:id="@+id/RadioButton01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="支出"></RadioButton>
-<RadioButton android:id="@+id/RadioButton02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="收入"></RadioButton>
-<RadioButton android:id="@+id/RadioButton03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="转帐"></RadioButton>
-</RadioGroup><Button android:text="@+id/Button01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/btn_parent"></Button>
+<TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="根类："></TextView><RadioGroup android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/rdg_root" android:layout_width="fill_parent" android:checkedButton="@+id/rdbtn_payout"><RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="支出" android:id="@+id/rdbtn_payout"></RadioButton>
+<RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="收入" android:id="@+id/rdbtn_income"></RadioButton>
+<RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="转帐" android:id="@+id/rdbtn_transfer"></RadioButton>
+</RadioGroup><TextView android:id="@+id/TextView03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="父类"></TextView><CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="使用父类" android:id="@+id/cb_use_parent"></CheckBox>
 
 
 
+
+
+<Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/spin_parent"></Spinner>
 </LinearLayout>

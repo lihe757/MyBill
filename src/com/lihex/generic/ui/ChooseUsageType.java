@@ -16,15 +16,15 @@ public class ChooseUsageType extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choose_usage_type);
-		Button btnChoose=(Button)findViewById(R.id.btn_parent);
-		btnChoose.setOnClickListener(new Button.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(ChooseUsageType.this,UseCategoryActivity.class));
-				
-			}
-		});
+//		Button btnChoose=(Button)findViewById(R.id.btn_parent);
+//		btnChoose.setOnClickListener(new Button.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				startActivity(new Intent(ChooseUsageType.this,UseCategoryActivity.class));
+//				
+//			}
+//		});
 		
 	}
 
