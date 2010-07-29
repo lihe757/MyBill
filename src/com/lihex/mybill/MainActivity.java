@@ -2,6 +2,7 @@ package com.lihex.mybill;
 
 import com.lihex.generic.ui.AccountCategory;
 import com.lihex.generic.ui.CalendarActivity;
+import com.lihex.generic.ui.Participant;
 import com.lihex.generic.ui.UseCategoryActivity;
 
 import android.app.Activity;
@@ -22,6 +23,7 @@ public class MainActivity extends Activity {
 	private Button mBtnDate;
 	private Button mBtnAccount;
 	private Button mBtnUsage;
+	private Button mBtnParticipant;
 	
 	
     @Override
@@ -60,6 +62,15 @@ public class MainActivity extends Activity {
 				
 			}
 		});
+	   mBtnParticipant=(Button)findViewById(R.id.btn_participant);
+	   mBtnParticipant.setOnClickListener(new Button.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			startActivity(new Intent(MainActivity.this,Participant.class));
+			
+		}
+	});
    }
     
 	@Override

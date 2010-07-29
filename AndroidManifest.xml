@@ -37,6 +37,14 @@
 <category android:name="android.intent.category.DEFAULT"></category>
 </intent-filter>
 </activity>
+<activity android:name="com.lihex.generic.ui.Participant"><intent-filter><action android:name="android.intent.action.MAIN"></action>
+<category android:name="android.intent.category.DEFAULT"></category>
+</intent-filter>
+</activity>
+<activity android:name="com.lihex.generic.ui.ParticiPantItemList"><intent-filter><action android:name="android.intent.action.MAIN"></action>
+<category android:name="android.intent.category.DEFAULT"></category>
+</intent-filter>
+</activity>
 </application>
     <uses-sdk android:minSdkVersion="3" />
 

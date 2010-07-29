@@ -10,6 +10,7 @@ import com.lihex.mybill.R;
 public class DBHelperFactory {
 	public static final int DB_TYPE_ACCOUNT = 0;
 	public static final int DB_TYPE_USAGE = 1;
+	public static final int DB_TYPE_PARTICIPANT = 2;
 
 	private SQLiteDatabase db;
 	private DBOpenHelper mdbHelper;
@@ -21,6 +22,8 @@ public class DBHelperFactory {
 	public static final String DB_NAME = "mybill_db";
 	public static final String DB_TABLE_ACOUNTTYPE = "tb_acount_type";
 	public static final String DB_TABLE_USAGE = "tb_usage";
+	public static final String DB_TABLE_PARTICIPANT = "tb_participant";
+	
 
 	private DBHelperFactory(Context context) {
 		mContext = context;
@@ -59,6 +62,9 @@ public class DBHelperFactory {
 		case DB_TYPE_USAGE:
 			dbHelper =new DBHelperUsage(db);
 			break;
+		case DB_TYPE_PARTICIPANT:
+			dbHelper = new DBHelperParticipant(db);
+			break;
 		}
 		return dbHelper;
 	}
@@ -71,6 +77,10 @@ public class DBHelperFactory {
 		private static final String DB_CREATE_USAGE_TABLE = "CREATE TABLE "
 				+ DBHelperFactory.DB_TABLE_USAGE
 				+ " (_id INTEGER PRIMARY KEY , parent_id INTEGER   , name TEXT UNIQUE NOT NULL , type TEXT NOT NULL)";
+		private static final String DB_CREATE_PARTICIPANT_TABLE = "CREATE TABLE "
+			+ DBHelperFactory.DB_TABLE_PARTICIPANT
+			+ " (_id INTEGER PRIMARY KEY , type_id INTEGER   , name TEXT UNIQUE NOT NULL , remark TEXT NOT NULL)";
+		
 		private Context mcContext;
 
 		public DBOpenHelper(Context context, String name, int version) {
@@ -101,6 +111,17 @@ public class DBHelperFactory {
 							+ DBHelperFactory.DB_TABLE_USAGE
 							+ " (parent_id,name,type) VALUES ( -1, '" + types2[i]
 							+ "','" + types2[i] + "');");
+				}
+				
+				/*生成参与人员列表，并初始化*/
+				db.execSQL(DB_CREATE_PARTICIPANT_TABLE);
+				String[]types3 = mcContext.getResources().getStringArray(R.array.participant);
+				for(int i=0;i<types3.length;i++){
+					db.execSQL("INSERT INTO "
+							+DBHelperFactory.DB_TABLE_PARTICIPANT
+							+" (type_id,name,remark) VALUES ("+i
+							+" ,'"+types3[i]+"'"
+							+" ,'备注');");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

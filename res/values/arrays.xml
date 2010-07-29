@@ -19,6 +19,10 @@
 
 <string-array name="usage_type"><item>支出</item>
 <item>收入</item>
-<item>转帐</item>
+<item>转账</item>
+</string-array>
+<string-array name="participant"><item>家庭成员</item>
+<item>往来人员</item>
+<item>机构组织</item>
 </string-array>
 </resources>

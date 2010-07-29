@@ -6,6 +6,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 public class DBHelperUsage extends DBHelper {
+
+
+
+	private SQLiteDatabase db;
+	public static final String[] COLS = new String[] { "_id", "parent_id", "name", "type" };
+	public DBHelperUsage(SQLiteDatabase db) {
+		super(db);
+		this.db=db;
+	}
+
 	@Override
 	public void insert(ContentValues values) {
 		
@@ -19,18 +29,17 @@ public class DBHelperUsage extends DBHelper {
 		values.put("type", b.getString("type"));
 		db.insert(DBHelperFactory.DB_TABLE_USAGE, null, values);
 	}
-
-
-	private SQLiteDatabase db;
-	public static final String[] COLS = new String[] { "_id", "parent_id", "name", "type" };
-	public DBHelperUsage(SQLiteDatabase db) {
-		super(db);
-		this.db=db;
+	public void update(int id,Bundle b){
+		ContentValues values=new ContentValues();
+		values.put("parent_id", b.getInt("parent_id"));
+		values.put("name", b.getString("name"));
+		values.put("type", b.getString("type"));
+		db.update(DBHelperFactory.DB_TABLE_USAGE, values, "_id = "+id, null);
 	}
-
+	
 	@Override
 	public void delete(int id) {
-		// TODO Auto-generated method stub
+		db.delete(DBHelperFactory.DB_TABLE_USAGE, "_id = "+id, null);
 
 	}
 
@@ -42,8 +51,9 @@ public class DBHelperUsage extends DBHelper {
 
 	@Override
 	public Cursor fetchOne(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Cursor cursor=db.query(DBHelperFactory.DB_TABLE_USAGE, COLS, "_id = "+id, null, null, null, null);
+		cursor.moveToFirst();
+		return cursor;
 	}
 	public Cursor fetchFirstLevel(String type){
 		Cursor c=db.query(DBHelperFactory.DB_TABLE_USAGE, COLS, " parent_id = -1 AND type = '"+type+"'", null, null, null, null);
