@@ -21,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.FilterQueryProvider;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
@@ -28,6 +29,7 @@ import android.widget.SimpleCursorTreeAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.SimpleCursorAdapter.CursorToStringConverter;
 
 import com.lihex.mybill.data.DBHelperFactory;
 import com.lihex.mybill.data.DBHelperUsage;
@@ -94,7 +96,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, ADD_USAGE_TYPE, 0, "新建").setIcon(
 				android.R.drawable.ic_menu_add);
-		menu.add(0,EDIT_USAGE_TYPE,0,"编辑");
+	
 		return true;
 	}
 
@@ -195,7 +197,8 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 				Cursor c=null;
 				switch (checkedId) {
 				case com.lihex.mybill.R.id.rdbtn_payout:
-					c=mDbHelper.fetchFirstLevel("支出");
+//					c=mDbHelper.fetchFirstLevel("支出");
+					c=mDbHelper.fetchFirstLevelIgnore("支出", new int[]{1});
 					adapter.changeCursor(c);
 					usege.putString("type", "支出");
 					break;
@@ -208,6 +211,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 					c=mDbHelper.fetchFirstLevel("转账");
 					adapter.changeCursor(c);
 					usege.putString("type", "转账");
+					
 					break;
 				}
 				

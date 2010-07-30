@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 
 public class DBHelperUsage extends DBHelper {
 
@@ -57,8 +58,28 @@ public class DBHelperUsage extends DBHelper {
 	}
 	public Cursor fetchFirstLevel(String type){
 		Cursor c=db.query(DBHelperFactory.DB_TABLE_USAGE, COLS, " parent_id = -1 AND type = '"+type+"'", null, null, null, null);
+	
 		return c;
 	}
+	public Cursor fetchFirstLevelIgnore(String type,int[] igIds){
+		Cursor c=null;
+		if(igIds.length!=0){
+			StringBuffer sb=new StringBuffer(" parent_id = -1 AND type = '"+type+"' AND _id NOT IN ("+igIds[0]);
+			for(int i=1;i<igIds.length;i++){
+				sb.append(","+igIds[i]);
+			}
+			sb.append(")");
+			c=db.query(DBHelperFactory.DB_TABLE_USAGE, COLS, sb.toString(), null, null, null, null);
+			Log.i("DBHelperUsage ",sb.toString());
+		}else{
+			c=fetchFirstLevel(type);
+		}
+		return c;
+	
+		
+		
+	}
+	
 	public Cursor fetchSecendLevel(int pId){
 		Cursor c=db.query(DBHelperFactory.DB_TABLE_USAGE, COLS, " parent_id = "+pId, null, null, null, null);
 		return c;

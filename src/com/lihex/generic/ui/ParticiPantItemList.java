@@ -106,8 +106,6 @@ public class ParticiPantItemList extends ListActivity {
 				
 			}
 		});
-//		final EditText edtBlance = (EditText) textEntryView
-//				.findViewById(R.id.edt_ac_blance);
 		final EditText edtRemark = (EditText) textEntryView
 				.findViewById(R.id.edt_ac_remark);
 		
