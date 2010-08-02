@@ -1,8 +1,10 @@
 package com.lihex.generic.ui;
 
+import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
 
 import com.lihex.mybill.R;
@@ -38,6 +40,17 @@ public class AccountCategory extends TabActivity {
 		i.putExtra("type", mAcTabs[index]);
 		return i;
 		
+	}
+
+	@Override
+	public void finishFromChild(Activity child) {
+		ItemList l=(ItemList)child;
+		Log.i("AccountCategory","child is finished !");
+		Intent result =new Intent();
+		result.putExtra("account_id", l.getCurAccountTypeId());
+		
+		setResult(RESULT_OK,result);
+		super.finishFromChild(child);
 	}
 	
 	

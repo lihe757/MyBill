@@ -27,5 +27,6 @@ public class ChooseUsageType extends Activity {
 //		});
 		
 	}
+	
 
 }

@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class DBHelperAccountType extends DBHelper {
 
+	
+
 	public static final String[] COLS = new String[] { "_id", "name", "blance",
 			"remark", "type" };
 	
@@ -63,6 +65,10 @@ public class DBHelperAccountType extends DBHelper {
 	public void insert(ContentValues values) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public void close() {
+		db.close();
 	}
 
 }

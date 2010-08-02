@@ -3,6 +3,7 @@ package com.lihex.mybill.data;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.lihex.mybill.R;
@@ -28,7 +29,7 @@ public class DBHelperFactory {
 	private DBHelperFactory(Context context) {
 		mContext = context;
 		mdbHelper = new DBOpenHelper(mContext, DB_NAME, DB_VERSION);
-		db = mdbHelper.getWritableDatabase();
+		
 	}
 
 	/**
@@ -55,6 +56,12 @@ public class DBHelperFactory {
 	 */
 	public DBHelper getDBHelperByType(int type) {
 		DBHelper dbHelper = null;
+		try {
+			db = mdbHelper.getWritableDatabase();
+		} catch (SQLiteException e) {
+			db = mdbHelper.getReadableDatabase();
+			e.printStackTrace();
+		}
 		switch (type) {
 		case DB_TYPE_ACCOUNT:
 			dbHelper = new DBHelperAccountType(db);

@@ -10,6 +10,13 @@ public class DBHelperUsage extends DBHelper {
 
 
 
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	private SQLiteDatabase db;
 	public static final String[] COLS = new String[] { "_id", "parent_id", "name", "type" };
 	public DBHelperUsage(SQLiteDatabase db) {

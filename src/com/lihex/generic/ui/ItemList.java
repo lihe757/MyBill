@@ -3,6 +3,7 @@ package com.lihex.generic.ui;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.lihex.mybill.R;
@@ -35,6 +38,7 @@ public class ItemList extends ListActivity {
 	private static final int ADD_ACOUNT_TYPE = 1 << 2;
 	private static final int EDIT_ACOUNT_TYPE = 1 << 3;
 
+	private int curTypeId=0;
 	/* 编辑、删除菜单组ID */
 	private static final int MENU_GROUP_ALTERNATIVE = 0x00000001;
 
@@ -309,6 +313,26 @@ public class ItemList extends ListActivity {
 			mCAdapter.changeCursor(c);
 		}
 
+	}
+
+	@Override
+	protected void onDestroy() {
+		mDbHelper.close();
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		curTypeId=(int)mCAdapter.getItemId(position);
+		finish();
+		
+	}
+	/**
+	 * 返回当前被选择的账号类型ID
+	 * @return
+	 */
+	public int getCurAccountTypeId(){
+		return curTypeId;
 	}
 
 }

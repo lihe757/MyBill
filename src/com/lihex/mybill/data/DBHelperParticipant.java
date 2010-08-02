@@ -8,6 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 public class DBHelperParticipant extends DBHelper {
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
 	public static final String[] COLS = new String[] { "_id", "type_id", "name",
 		"remark"};
 	private SQLiteDatabase db;
@@ -43,8 +48,7 @@ public class DBHelperParticipant extends DBHelper {
 		return null;
 	}
 	public Cursor fetchAllByType(int typeId){
-		Cursor c =db.query(DBHelperFactory.DB_TABLE_PARTICIPANT, COLS, "type_id = "+typeId, null,null, null, null);
-		
+		Cursor c =db.query(DBHelperFactory.DB_TABLE_PARTICIPANT, COLS, "type_id = "+typeId, null,null, null, null);		
 		return c;
 	}
 

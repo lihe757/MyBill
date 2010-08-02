@@ -40,6 +40,17 @@ public class UseCategoryActivity extends TabActivity  {
 		i.putExtra("type", mAcTabs[index]);
 		return i;
 	}
+
+	
+
+	@Override
+	public void finishFromChild(Activity child) {
+		UCItemList u=(UCItemList)child;
+		Intent result =new Intent();
+		result.putExtra("usage_id", u.getCurTypeId());
+		setResult(RESULT_OK,result);
+		super.finishFromChild(child);
+	}
 	
 	
 

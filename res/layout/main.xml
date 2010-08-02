@@ -7,14 +7,25 @@
 
 
 <LinearLayout android:id="@+id/LinearLayout04" android:layout_height="wrap_content" android:layout_width="fill_parent"><TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="金额"></TextView><EditText android:layout_below="@id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/edt_sum" android:layout_weight="1" android:hint="请输入金额"></EditText><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/TextView01" android:id="@+id/btn_add" android:layout_toRightOf="@+id/edt_sum" android:text="添加"></Button></LinearLayout><ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="fill_parent"><LinearLayout android:id="@+id/LinearLayout02" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"><LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent">
-<TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="详细"></TextView><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/btn_start_time" android:text="起始日期"></Button>
-<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/btn_alarm" android:text="财务提醒"></Button>
-<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/btn_acount" android:text="账户"></Button>
-<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/btn_category" android:text="分类"></Button>
-<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/btn_participant" android:text="人员与机构"></Button>
-</LinearLayout><LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical"><TextView android:id="@+id/TextView03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="备注"></TextView><EditText android:text="@+id/EditText02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:minLines="3" android:id="@+id/edt_memo"></EditText>
+<TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="详细"></TextView>
+
+
+
+
+</LinearLayout><TableLayout android:id="@+id/TableLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:stretchColumns="1"><TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content" android:layout_height="wrap_content"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btn_cur_date" android:text="起始日期"></Button><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/btn_start_time"></Button>
+
+</TableRow><TableRow android:id="@+id/TableRow02" android:layout_width="wrap_content" android:layout_height="wrap_content"><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/btn_alarm" android:text="财务提醒"></Button>
+<Button android:text="@+id/Button04" android:id="@+id/Button04" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+</TableRow><TableRow android:id="@+id/TableRow03" android:layout_width="wrap_content" android:layout_height="wrap_content"><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/btn_acount" android:text="账户"></Button>
+<Button android:text="@+id/Button03" android:id="@+id/Button03" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+</TableRow><TableRow android:id="@+id/TableRow04" android:layout_width="wrap_content" android:layout_height="wrap_content"><Button android:layout_height="wrap_content" android:id="@+id/btn_category" android:text="分类" android:layout_width="wrap_content"></Button>
+<Button android:text="@+id/Button02" android:id="@+id/Button02" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+</TableRow><TableRow android:id="@+id/TableRow05" android:layout_width="wrap_content" android:layout_height="wrap_content"><Button android:layout_height="wrap_content" android:id="@+id/btn_participant" android:text="人员与机构" android:layout_width="wrap_content"></Button><Button android:text="@+id/Button01" android:id="@+id/Button01" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+</TableRow>
+</TableLayout><LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical"><TextView android:id="@+id/TextView03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="备注"></TextView><EditText android:text="@+id/EditText02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:minLines="3" android:id="@+id/edt_memo"></EditText>
 
 </LinearLayout>
+
 
 </LinearLayout>
 

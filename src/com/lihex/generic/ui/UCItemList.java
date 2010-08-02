@@ -27,14 +27,16 @@ import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorTreeAdapter;
 import android.widget.Spinner;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.SimpleCursorAdapter.CursorToStringConverter;
 
 import com.lihex.mybill.data.DBHelperFactory;
 import com.lihex.mybill.data.DBHelperUsage;
 
-public class UCItemList extends ExpandableListActivity implements OnTouchListener {
+public class UCItemList extends ExpandableListActivity implements OnTouchListener{
 	public static final String TAG="UCItemList";
 	private static final int DELETE_USAGE_TYPE = 1 << 1;
 	private static final int ADD_USAGE_TYPE = 1 << 2;
@@ -44,6 +46,8 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 	private CatgItemListAdapter mCAdapter;
 	private DBHelperUsage mDbHelper;
 	private GestureDetector mGestureDetector;
+	
+	private int curTypeId=0;
 	
 	public static final String[] GROUPNAME={"name"};
 	@Override
@@ -68,9 +72,10 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 	
 		getExpandableListView().setOnTouchListener(this);
 		getExpandableListView().setLongClickable(true);
+		
 		mGestureDetector=new GestureDetector(new MyGesture());
-//		getExpandableListView().setGroupIndicator(getResources().getDrawable(com.lihex.mybill.R.drawable.group_indicator));
 		Log.i(TAG,"----------------------+++++++++++");
+		
 		
 
 	}
@@ -79,6 +84,16 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 	
 	
 	
+	@Override
+	protected void onDestroy() {
+		mDbHelper.close();
+		super.onDestroy();
+	}
+
+
+
+
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -107,11 +122,15 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v,
 			int groupPosition, int childPosition, long id) {
-		// TODO Auto-generated method stub
-		return super.onChildClick(parent, v, groupPosition, childPosition, id);
+		
+		curTypeId=(int)id;
+		finish();
+		return true;
 	}
 
-
+	public int getCurTypeId(){
+		return curTypeId;
+	}
 
 
 
@@ -133,6 +152,12 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 		Log.i(TAG,"info.id = "+info.id);
 		Cursor c=mDbHelper.fetchOne((int)info.id);
 		
+		int p_id=(int)c.getInt(1);
+		if(p_id==-1){
+			menu.add(0,ADD_USAGE_TYPE,0,"添加");
+		}
+		
+		
 		menu.setHeaderTitle(c.getString(2));
 		menu.add(0,EDIT_USAGE_TYPE,0,"编辑");
 		menu.add(0,DELETE_USAGE_TYPE,0,"删除");
@@ -150,7 +175,6 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 		int menuId = item.getItemId();
 		switch (menuId) {
 		case ADD_USAGE_TYPE:
-//			mDbHelper.insert(-1, "你好"+System.currentTimeMillis(), "支出");
 			Log.i(TAG,"添加一条USAGE");
 			getAlertDialog(ADD_USAGE_TYPE,item).show();
 			break;
@@ -274,6 +298,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 					}
 					mDbHelper.insert(usege);
 					Log.i(TAG, usege.toString());
+					updateList();
 				}
 			})
 			.create();
@@ -301,8 +326,10 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 				int pId=cursor.getInt(1);
 				usege.putInt("parent_id", pId);
 				int pos=-1;
+				/*如果是父亲分类,则只具备选择根分类的功能*/
 				if(-1==pId){
 					cbUseParent.setChecked(false);
+					cbUseParent.setEnabled(false);
 				}else{
 					cbUseParent.setChecked(true);
 					SimpleCursorAdapter a=(SimpleCursorAdapter)spinParent.getAdapter();
@@ -337,6 +364,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 					
 					mDbHelper.update((int) info.id,usege);
 					Log.i(TAG, usege.toString());
+					updateList();
 				}
 			})
 			.create();
@@ -350,7 +378,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					mDbHelper.delete((int)info.id);
-					
+					updateList();
 				}
 			})
 			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -368,7 +396,9 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 		
 	}
 
-
+	private void updateList(){
+		mCAdapter.getCursor().requery();
+	}
 
 	public class CatgItemListAdapter extends SimpleCursorTreeAdapter {
 
@@ -410,6 +440,11 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 		mGestureDetector.onTouchEvent(event);
 		return false;
 	}
+
+
+
+
+
 
 
 

@@ -5,30 +5,33 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.lihex.mybill.MainActivity;
 import com.lihex.mybill.R;
 
-public class CalendarActivity extends Activity implements OnItemClickListener {
+public class CalendarActivity extends Activity implements OnItemClickListener,OnTouchListener {
 	private static final boolean DEBUG = true;
 	private static final String TAG = "CalendarActivity";
 
-	private Calendar mCalendar = Calendar.getInstance();
+	private Calendar mCalendar ;
 	private WeekDayAdapter weekDayAdapter;
 	private GridView mGridWeekDay;
+	private GestureDetector mDetector;
 
 	private Button mBtnDate;
 
@@ -37,16 +40,32 @@ public class CalendarActivity extends Activity implements OnItemClickListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
+		mDetector=new GestureDetector(new GestureDetector.SimpleOnGestureListener(){
+
+			@Override
+			public boolean onDoubleTap(MotionEvent e) {
+				debug(TAG,"onDoubleTap");
+			
+				
+				
+				return true;
+			}
+			
+		});
+		
 		initView();
+		
+		
 	}
 
 	private void initView() {
+		mCalendar=Calendar.getInstance();
 		mBtnDate = (Button) findViewById(R.id.btn_date);
 		mBtnDate.setOnClickListener(new Button.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-
+				
 				btnDateOnClicked(v);
 			}
 		});
@@ -85,7 +104,9 @@ public class CalendarActivity extends Activity implements OnItemClickListener {
 
 		mGridWeekDay.setAdapter(weekDayAdapter);
 		mGridWeekDay.setOnItemClickListener(this);
+		mGridWeekDay.setOnTouchListener(this);
 		
+		OnDateChangeListener();
 
 	}
 
@@ -111,7 +132,16 @@ public class CalendarActivity extends Activity implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		debug(TAG, "" + ((TextView) view).getText());
-		// view.requestFocus();
+		
+		int day=weekDayAdapter.getDay(position);
+		mCalendar.set(Calendar.DAY_OF_MONTH, day);
+		Intent result = new Intent();
+		long time=mCalendar.getTimeInMillis();
+		result.putExtra("time", time);
+		setResult(RESULT_OK, result);
+		finish();
+		
+		
 
 	}
 
@@ -124,11 +154,18 @@ public class CalendarActivity extends Activity implements OnItemClickListener {
 		mBtnDate.setText(DateFormat.format("yyyy年MM月", mCalendar));
 	}
 
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		mDetector.onTouchEvent(event);
+		return false;
+	}
+
 	private static void debug(String tag, String mesg) {
 		if (DEBUG) {
 			Log.i(tag, mesg);
 		}
-
 	}
+	
+	
 
 }

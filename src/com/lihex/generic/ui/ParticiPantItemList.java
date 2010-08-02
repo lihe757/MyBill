@@ -27,9 +27,10 @@ public class ParticiPantItemList extends ListActivity {
 
 	private SimpleCursorAdapter mCAdapter;
 	private DBHelperParticipant mDbHelper;
+	private Cursor mCursor;
 	private String[] mTypeArray;
-	private static final String[] FROM = { "name","remark" };
-	private static final int[] TO = { R.id.txt_part_name,R.id.txt_part_remark };
+	private static final String[] FROM = { "name", "remark" };
+	private static final int[] TO = { R.id.txt_part_name, R.id.txt_part_remark };
 
 	private static final int DELETE_ACOUNT_TYPE = 1 << 1;
 	private static final int ADD_ACOUNT_TYPE = 1 << 2;
@@ -49,15 +50,26 @@ public class ParticiPantItemList extends ListActivity {
 		mTypeArray = getResources().getStringArray(R.array.participant);
 
 		/* 数据库操作 */
-		mDbHelper=(DBHelperParticipant)DBHelperFactory.getInstance(this).getDBHelperByType(DBHelperFactory.DB_TYPE_PARTICIPANT);
+		mDbHelper = (DBHelperParticipant) DBHelperFactory.getInstance(this)
+				.getDBHelperByType(DBHelperFactory.DB_TYPE_PARTICIPANT);
+		int type_id = getIntent().getIntExtra("type_id", -1);
+		if (type_id == -1) {
+			type_id = 0;
+		}
+		Log.i(TAG, "type_id = " + type_id);
+		mCursor = mDbHelper.fetchAllByType(type_id);
+		mCAdapter = new SimpleCursorAdapter(this, R.layout.participant_item,
+				mCursor, FROM, TO);
+		this.setListAdapter(mCAdapter);
+		
+		startManagingCursor(mCursor);
 
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		
-		final Bundle participant=new Bundle();
-		
+
+		final Bundle participant = new Bundle();
 
 		final AdapterView.AdapterContextMenuInfo info;
 		LayoutInflater factory = LayoutInflater.from(this);
@@ -72,16 +84,17 @@ public class ParticiPantItemList extends ListActivity {
 			public void onClick(View v) {
 
 				final AlertDialog typeDialog = new AlertDialog.Builder(
-						ParticiPantItemList.this).setTitle("选人员/机构类型").setItems(mTypeArray,
-						new DialogInterface.OnClickListener() {
+						ParticiPantItemList.this).setTitle("选人员/机构类型")
+						.setItems(mTypeArray,
+								new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								typeBtn.setText(mTypeArray[which]);
-								participant.putInt("type_id", which);
-							}
-						}).create();
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										typeBtn.setText(mTypeArray[which]);
+										participant.putInt("type_id", which);
+									}
+								}).create();
 
 				typeDialog.show();
 
@@ -91,24 +104,22 @@ public class ParticiPantItemList extends ListActivity {
 		final EditText edtName = (EditText) textEntryView
 				.findViewById(R.id.edt_ac_name);
 		edtName.setOnFocusChangeListener(new EditText.OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if(!hasFocus){
-					String name=edtName.getText().toString();
-					if(name.equals("")||name.length()==0){
+				if (!hasFocus) {
+					String name = edtName.getText().toString();
+					if (name.equals("") || name.length() == 0) {
 						participant.putString("name", "新建人员/机构");
-					}
-					else{
-						participant.putString("name",name);
+					} else {
+						participant.putString("name", name);
 					}
 				}
-				
+
 			}
 		});
 		final EditText edtRemark = (EditText) textEntryView
 				.findViewById(R.id.edt_ac_remark);
-		
 
 		int menuId = item.getItemId();
 		switch (menuId) {
@@ -121,12 +132,13 @@ public class ParticiPantItemList extends ListActivity {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
-									participant.putString("remark", edtRemark.getText().toString());
+									participant.putString("remark", edtRemark
+											.getText().toString());
 									mDbHelper.insert(participant);
 									/* 刷新数据 */
 									mCAdapter.getCursor().requery();
 									Log.i(TAG, "" + whichButton);
-									
+
 								}
 							}).setNegativeButton("取消",
 							new DialogInterface.OnClickListener() {
@@ -157,7 +169,7 @@ public class ParticiPantItemList extends ListActivity {
 			participant.putString("name", c.getString(2));
 			edtRemark.setText(c.getString(3));
 			participant.putString("remark", c.getString(3));
-		
+
 			typeBtn.setText(mTypeArray[c.getInt(1)]);
 			new AlertDialog.Builder(ParticiPantItemList.this)
 					// .setIcon(R.drawable.alert_dialog_icon)
@@ -166,10 +178,11 @@ public class ParticiPantItemList extends ListActivity {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
-									participant.putString("remark", edtRemark.getText().toString());
-									mDbHelper.update(c.getInt(0),participant);
-//
-//									/* 更新视图 */
+									participant.putString("remark", edtRemark
+											.getText().toString());
+									mDbHelper.update(c.getInt(0), participant);
+									//
+									// /* 更新视图 */
 									mCAdapter.getCursor().requery();
 								}
 							}).setNegativeButton("取消",
@@ -303,30 +316,12 @@ public class ParticiPantItemList extends ListActivity {
 		return true;
 	}
 
+
+
 	@Override
-	protected void onResume() {
-		super.onResume();
-
-//		String type = getIntent().getStringExtra("type");
-		int type_id =getIntent().getIntExtra("type_id", -1);
-		if (type_id == -1 ) {
-			type_id = 0;
-		}
-
-		Cursor c = mDbHelper.fetchAllByType(type_id);
-		if (mCAdapter == null) {
-			mCAdapter = new SimpleCursorAdapter(this, R.layout.participant_item,
-					c, FROM, TO);
-			this.setListAdapter(mCAdapter);
-		} else {
-			mCAdapter.changeCursor(c);
-		}
-
+	protected void onDestroy() {
+		mDbHelper.close();
+		super.onDestroy();
 	}
-	
-
-	
-	
-	
 
 }

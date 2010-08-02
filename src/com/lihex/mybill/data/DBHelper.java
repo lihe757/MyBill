@@ -17,5 +17,7 @@ public abstract class DBHelper {
 	public abstract Cursor fetchAll();
 	
 	public abstract void insert(ContentValues values);
+	
+	public abstract void close();
 }
 
