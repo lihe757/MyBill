@@ -15,6 +15,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.lihex.mybill.R;
@@ -35,6 +36,9 @@ public class ParticiPantItemList extends ListActivity {
 	private static final int DELETE_ACOUNT_TYPE = 1 << 1;
 	private static final int ADD_ACOUNT_TYPE = 1 << 2;
 	private static final int EDIT_ACOUNT_TYPE = 1 << 3;
+	
+	private int curTypeId=0;
+	
 
 	/* 编辑、删除菜单组ID */
 	private static final int MENU_GROUP_ALTERNATIVE = 0x00000001;
@@ -316,12 +320,22 @@ public class ParticiPantItemList extends ListActivity {
 		return true;
 	}
 
-
-
 	@Override
 	protected void onDestroy() {
+		
 		mDbHelper.close();
 		super.onDestroy();
+	}
+	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		curTypeId=(int)id;
+	
+		finish();
+	}
+
+	public int getTypeId(){
+		return curTypeId;
 	}
 
 }

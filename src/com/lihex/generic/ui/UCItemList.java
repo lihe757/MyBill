@@ -45,6 +45,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 
 	private CatgItemListAdapter mCAdapter;
 	private DBHelperUsage mDbHelper;
+	private Cursor mCursor;
 	private GestureDetector mGestureDetector;
 	
 	private int curTypeId=0;
@@ -58,9 +59,9 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 		
 		mDbHelper=(DBHelperUsage)DBHelperFactory.getInstance(this).getDBHelperByType(DBHelperFactory.DB_TYPE_USAGE);
 		String type=getIntent().getStringExtra("type");
-		Cursor cursor=mDbHelper.fetchFirstLevel(type);
+		 mCursor=mDbHelper.fetchFirstLevel(type);
 
-		mCAdapter=new CatgItemListAdapter(cursor,
+		mCAdapter=new CatgItemListAdapter(mCursor,
                 this,
                 android.R.layout.simple_expandable_list_item_1,
                 android.R.layout.simple_expandable_list_item_1,
@@ -69,6 +70,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
                 new String[] {"name"}, // Number for child layouts
                 new int[] {android.R.id.text1});
 		setListAdapter(mCAdapter);
+		startManagingCursor(mCursor);
 	
 		getExpandableListView().setOnTouchListener(this);
 		getExpandableListView().setLongClickable(true);
@@ -94,14 +96,14 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 
 
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Cursor c=mCAdapter.getCursor();
-		c.requery();
-		Log.i(TAG,"cursor size = "+c.getCount());
-		
-	}
+//	@Override
+//	protected void onResume() {
+//		super.onResume();
+//		Cursor c=mCAdapter.getCursor();
+//		c.requery();
+//		Log.i(TAG,"cursor size = "+c.getCount());
+//		
+//	}
 
 
 
@@ -152,15 +154,16 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 		Log.i(TAG,"info.id = "+info.id);
 		Cursor c=mDbHelper.fetchOne((int)info.id);
 		
+		/*如果是父类*/
 		int p_id=(int)c.getInt(1);
 		if(p_id==-1){
 			menu.add(0,ADD_USAGE_TYPE,0,"添加");
 		}
-		
-		
 		menu.setHeaderTitle(c.getString(2));
 		menu.add(0,EDIT_USAGE_TYPE,0,"编辑");
 		menu.add(0,DELETE_USAGE_TYPE,0,"删除");
+		//关闭cursor
+		c.close();
 		
 	}
 
@@ -219,10 +222,11 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				Log.i(TAG,"checked id = "+checkedId+" = "+com.lihex.mybill.R.id.rdbtn_income);
 				Cursor c=null;
+				adapter.getCursor().close();
 				switch (checkedId) {
 				case com.lihex.mybill.R.id.rdbtn_payout:
-//					c=mDbHelper.fetchFirstLevel("支出");
-					c=mDbHelper.fetchFirstLevelIgnore("支出", new int[]{1});
+					c=mDbHelper.fetchFirstLevel("支出");
+//					c=mDbHelper.fetchFirstLevelIgnore("支出", new int[]{1});
 					adapter.changeCursor(c);
 					usege.putString("type", "支出");
 					break;
@@ -279,6 +283,36 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 		
 		switch (type) {
 		case ADD_USAGE_TYPE:
+			if(info!=null){
+				final int id = (int) info.id;
+				final Cursor cursor=mDbHelper.fetchOne(id);
+				String rootType=cursor.getString(3);
+				usege.putString("type", rootType);
+				if(rootType.equals("支出")){
+					rdgRoot.check(com.lihex.mybill.R.id.rdbtn_payout);
+					
+				}else if(rootType.equals("收入")){
+					rdgRoot.check(com.lihex.mybill.R.id.rdbtn_income);
+				}else if(rootType.equals("转账")){
+					rdgRoot.check(com.lihex.mybill.R.id.rdbtn_transfer);
+				}
+				/*使用父类*/
+				cbUseParent.setEnabled(true);
+				cbUseParent.setChecked(true);
+				SimpleCursorAdapter a=(SimpleCursorAdapter)spinParent.getAdapter();
+				
+				int pos=0;
+				for(int i=0;i<a.getCount();i++){
+					if(a.getItemId(i)==id){
+						pos=i;
+						break;
+					}
+				}
+				spinParent.setSelection(pos);
+				cursor.close();
+				
+				
+			}
 			usege.putInt("parent_id", -1);
 //			usege.putString("type", "支出");
 			usege.putString("type", getIntent().getStringExtra("type"));
@@ -306,7 +340,8 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 		case EDIT_USAGE_TYPE:
 			if(info!=null){
 				final int id=(int) info.id;
-				Cursor cursor=mDbHelper.fetchOne(id);	
+				
+				final Cursor cursor=mDbHelper.fetchOne(id);	
 				Log.i(TAG, "id = "+id+",name = "+cursor.getString(cursor.getColumnIndex("name")));
 				/*设置名称*/
 				edt_name.setText(cursor.getString(2));
@@ -341,6 +376,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 					}
 					spinParent.setSelection(pos);
 				}
+				cursor.close();
 				
 				
 			}
@@ -365,6 +401,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 					mDbHelper.update((int) info.id,usege);
 					Log.i(TAG, usege.toString());
 					updateList();
+					
 				}
 			})
 			.create();

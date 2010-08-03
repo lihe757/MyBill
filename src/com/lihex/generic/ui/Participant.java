@@ -2,6 +2,7 @@ package com.lihex.generic.ui;
 
 import com.lihex.mybill.R;
 
+import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,5 +38,15 @@ private static  String[] mAcTabs;
 		return i;
 		
 	}
+	@Override
+	public void finishFromChild(Activity child) {
+		ParticiPantItemList item=(ParticiPantItemList)child;
+		Intent result=new Intent();
+		result.putExtra("participant_id",item.getTypeId());
+		setResult(RESULT_OK,result);
+		finish();
+	}
+	
+	
 
 }

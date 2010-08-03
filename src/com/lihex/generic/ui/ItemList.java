@@ -29,6 +29,7 @@ public class ItemList extends ListActivity {
 
 	private SimpleCursorAdapter mCAdapter;
 	private DBHelperAccountType mDbHelper;
+	private Cursor mCursor;
 	private String[] mTypeArray;
 	private static final String[] FROM = { "name", "blance", "remark" };
 	private static final int[] TO = { R.id.txt_acount_name,

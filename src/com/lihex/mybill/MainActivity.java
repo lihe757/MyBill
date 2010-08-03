@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
 	public static final int PICK_ONE_DATE = 1;
 	public static final int PICK_ACCOUNT_TYPE = 2;
 	public static final int PICK_USAGE_TYPE = 3;
+	public static final int PICK_PARTICIPANT=4;
 	
 
 	private Button mBtnDate;
@@ -80,7 +81,8 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(MainActivity.this, Participant.class));
+				Intent intent=new Intent(MainActivity.this, Participant.class);				
+				startActivityForResult(intent, PICK_PARTICIPANT);
 
 			}
 		});
@@ -114,6 +116,9 @@ public class MainActivity extends Activity {
 				break;
 			case PICK_USAGE_TYPE:
 				Log.i(TAG,"usage id = "+data.getIntExtra("usage_id", -1));
+				break;
+			case PICK_PARTICIPANT:
+				Log.i(TAG,"participant id = "+data.getIntExtra("participant_id", -1));
 				break;
 
 			}
