@@ -22,7 +22,7 @@
 <Button android:text="@+id/Button02" android:id="@+id/Button02" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 </TableRow><TableRow android:id="@+id/TableRow05" android:layout_width="wrap_content" android:layout_height="wrap_content"><Button android:layout_height="wrap_content" android:id="@+id/btn_participant" android:text="人员与机构" android:layout_width="wrap_content"></Button><Button android:text="@+id/Button01" android:id="@+id/Button01" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 </TableRow>
-</TableLayout><LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical"><TextView android:id="@+id/TextView03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="备注"></TextView><EditText android:text="@+id/EditText02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:minLines="3" android:id="@+id/edt_memo"></EditText>
+</TableLayout><LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical"><TextView android:id="@+id/TextView03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="备注"></TextView><EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:minLines="3" android:id="@+id/edt_memo"></EditText>
 
 </LinearLayout>
 

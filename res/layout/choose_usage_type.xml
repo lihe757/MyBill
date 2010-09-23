@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent">
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent">
+ 
+  android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:id="@+id/dlog_choose_usage">
 <TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="名称："></TextView><EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/edt_usage_name"></EditText>
 
 <TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="根类："></TextView><RadioGroup android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/rdg_root" android:layout_width="fill_parent" android:checkedButton="@+id/rdbtn_payout"><RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="支出" android:id="@+id/rdbtn_payout"></RadioButton>
@@ -15,3 +16,4 @@
 
 <Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/spin_parent"></Spinner>
 </LinearLayout>
+</ScrollView>

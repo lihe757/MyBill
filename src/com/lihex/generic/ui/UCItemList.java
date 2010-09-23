@@ -1,5 +1,6 @@
 package com.lihex.generic.ui;
 
+import android.R;
 import android.app.AlertDialog;
 import android.app.ExpandableListActivity;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.widget.ExpandableListView;
 import android.widget.FilterQueryProvider;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorTreeAdapter;
 import android.widget.Spinner;
@@ -205,7 +207,8 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 		
 		/*吹图器*/
 		LayoutInflater inflater=(LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-		LinearLayout view=(LinearLayout)inflater.inflate(com.lihex.mybill.R.layout.choose_usage_type, null);
+		ScrollView content=(ScrollView)inflater.inflate(com.lihex.mybill.R.layout.choose_usage_type, null);
+		LinearLayout view=(LinearLayout)content.findViewById(com.lihex.mybill.R.id.dlog_choose_usage);
 		
 		final Bundle usege=new Bundle();
 		/*设置名称编辑框*/
@@ -319,7 +322,7 @@ public class UCItemList extends ExpandableListActivity implements OnTouchListene
 			/*生成对话框*/
 			dialog=new AlertDialog.Builder(UCItemList.this)
 			.setTitle("添加分类")
-			.setView(view)			
+			.setView(content)			
 			.setNegativeButton("Cancle", null)
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				
